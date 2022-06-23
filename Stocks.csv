@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Zaytseva_Lab10
+{
+     public class Stocks
+    {
+        public delegate void AccountHandler(string message);
+        public event AccountHandler? Notify;
+
+        public event AccountHandler? TakeNotify;
+        public event AccountHandler? PutNotify;
+
+
+        AccountHandler? notify;
+        public event AccountHandler? NotifyWithManage
+        {
+            add
+            {
+                notify += value;
+                //Console.WriteLine($"{value.Method.Name} добавлен");
+            }
+            remove
+            {
+                notify -= value;
+                //Console.WriteLine($"{value.Method.Name} удален");
+            }
+        }
+
+        public void PutPoints(Custumer custumer)
+        {
+        
+            PutNotify += DisplayGreenMessage;
+          
+
+            //Console.WriteLine($"Количесвто бонусов после операций:{person.CalculatePoints(person)}");
+
+            //Console.WriteLine($"Сумма к оплате:{person.Check}");
+            Notify?.Invoke($"Доступная скидка после оплаты:{custumer.CalculatePoints(custumer)}");
+            PutNotify?.Invoke($"Доступная скидка после оплаты:{custumer.CalculatePoints(custumer)}");
+
+            notify?.Invoke($"Доступная скидка после оплаты:{custumer.CalculatePoints(custumer)}");
+         
+
+        }
+
+        public void TakePoints(Custumer custumer)
+        {
+            var list0 = new List<string>();
+            TakeNotify += DisplayRedMessage;
+         
+           
+            Notify?.Invoke($"Доступная новая скидка после оплаты и неиспользованных льгот:{custumer.CalculatePoints(custumer)}");
+            TakeNotify?.Invoke($"Доступная новая скидка после оплаты и неиспользованных льгот:{custumer.CalculatePoints(custumer)}");
+
+            notify?.Invoke($"Доступная новая скидка после оплаты и неиспользованных льгот:{custumer.CalculatePoints(custumer)}");
+
+
+        }
+
+
+
+        public static void Account_Notify(string message)
+        {
+            Console.WriteLine(message);
+        }
+
+        public static void DisplayRedMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        public static void DisplayGreenMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+    }
+}
